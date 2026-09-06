@@ -1,0 +1,17 @@
+NETWORK SECURITY REPORT
+======================
+
+Risk Summary
+------------
+High severity alerts: 1
+Medium severity alerts: 2
+
+Failed Connections
+------------------
+192.168.1.15: 3 failed attempts
+10.0.0.8: 1 failed attempts
+
+Security Alerts
+---------------
+MEDIUM SEVERITY - Suspicious port 22 (SSH) from 192.168.1.15 - 3 attempts
+MEDIUM SEVERITY - Suspicious port 21 (FTP) from 10.0.0.8 - 1 attempts

@@ -1,6 +1,7 @@
 import csv
 from pathlib import Path
 DATA_FILE = Path(__file__).parent.parent / "data" / "network_logs.csv"
+REPORT_FILE = Path(__file__).parent.parent / "security_report.txt"
 
 failed_attempts = {}
 suspicious_connections = {}
@@ -50,3 +51,42 @@ for (ip, port), attempts in suspicious_connections.items():
     print("   IP:", ip)
     print("   Attempts:", attempts)
     print()
+
+report_file = open(REPORT_FILE, "w")
+
+report_file.write("NETWORK SECURITY REPORT\n")
+report_file.write("======================\n\n")
+
+report_file.write("Risk Summary\n")
+report_file.write("------------\n")
+
+high_risk = 0
+medium_risk = len(suspicious_connections)
+
+for ip, attempts in failed_attempts.items():
+    if attempts >= 3:
+        high_risk += 1
+
+report_file.write(f"High severity alerts: {high_risk}\n")
+report_file.write(f"Medium severity alerts: {medium_risk}\n\n")
+
+report_file.write("Failed Connections\n")
+report_file.write("------------------\n")
+
+for ip, attempts in failed_attempts.items():
+    report_file.write(f"{ip}: {attempts} failed attempts\n")
+
+report_file.write("\nSecurity Alerts\n")
+report_file.write("---------------\n")
+
+for (ip, port), attempts in suspicious_connections.items():
+    report_file.write(
+        f"MEDIUM SEVERITY - Suspicious port {port} "
+        f"({suspicious_ports[port]}) from {ip} - "
+        f"{attempts} attempts\n"
+    )
+
+report_file.close()
+
+print()
+print("✅ Security report created: security_report.txt")
