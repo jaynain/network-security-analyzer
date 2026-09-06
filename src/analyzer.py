@@ -1,4 +1,6 @@
 import csv
+from pathlib import Path
+DATA_FILE = Path(__file__).parent.parent / "data" / "network_logs.csv"
 
 failed_attempts = {}
 suspicious_connections = {}
@@ -8,7 +10,7 @@ suspicious_ports = {
     "22": "SSH"
 }
 
-with open("../data/network_logs.csv", "r") as file:
+with open(DATA_FILE, "r") as file:
     reader = csv.DictReader(file)
 
     for row in reader:
