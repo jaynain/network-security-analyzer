@@ -7,12 +7,29 @@ REPORT_FILE = Path(__file__).parent.parent / "security_report.txt"
 
 features = []
 records = []
+failed_attempts = {}
 
+# First pass: count failed attempts per IP
 with open(DATA_FILE, "r") as file:
     reader = csv.DictReader(file)
 
     for row in reader:
-        port = int(row["port"].strip())
+        if row["status"] == "Failed":
+            ip = row["ip_address"]
+
+            if ip not in failed_attempts:
+                failed_attempts[ip] = 0
+
+            failed_attempts[ip] += 1
+
+
+# Second pass: create ML features
+with open(DATA_FILE, "r") as file:
+    reader = csv.DictReader(file)
+
+    for row in reader:
+        ip = row["ip_address"]
+        port = int(row["port"])
 
         if row["status"] == "Failed":
             failed = 1
@@ -24,8 +41,9 @@ with open(DATA_FILE, "r") as file:
         else:
             suspicious = 0
 
-        features.append([port, failed, suspicious])
+        features.append([port, failed, suspicious, failed_attempts.get(ip, 0)])
         records.append(row)
+
 
 print("ML Features:")
 print(features)
@@ -64,7 +82,9 @@ for record, prediction in zip(records, predictions):
 
         print()
 
-report_file = open(REPORT_FILE, "w")
+
+# Add ML results to the existing security report
+report_file = open(REPORT_FILE, "a")
 
 report_file.write("\nML Anomaly Detection\n")
 report_file.write("--------------------\n")
