@@ -1,5 +1,8 @@
 NETWORK SECURITY REPORT
 ======================
+Generated: 2026-09-07 09:23:13
+
+Connections analyzed: 32
 
 Risk Summary
 ------------

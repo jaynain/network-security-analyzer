@@ -1,10 +1,12 @@
 import csv
 from pathlib import Path
+from datetime import datetime
 DATA_FILE = Path(__file__).parent.parent / "data" / "network_logs.csv"
 REPORT_FILE = Path(__file__).parent.parent / "security_report.txt"
 
 failed_attempts = {}
 suspicious_connections = {}
+total_connections = 0
 
 suspicious_ports = {
     "21": "FTP",
@@ -15,6 +17,8 @@ with open(DATA_FILE, "r") as file:
     reader = csv.DictReader(file)
 
     for row in reader:
+        total_connections += 1
+
         if row["status"] == "Failed":
             ip = row["ip_address"]
 
@@ -55,7 +59,9 @@ for (ip, port), attempts in suspicious_connections.items():
 report_file = open(REPORT_FILE, "w")
 
 report_file.write("NETWORK SECURITY REPORT\n")
-report_file.write("======================\n\n")
+report_file.write("======================\n")
+report_file.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+report_file.write(f"Connections analyzed: {total_connections}\n\n")
 
 report_file.write("Risk Summary\n")
 report_file.write("------------\n")
