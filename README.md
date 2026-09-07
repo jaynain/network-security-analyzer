@@ -11,7 +11,8 @@ Features
 * Uses Isolation Forest for unsupervised anomaly detection
 * Uses failed attempts per IP as a behavioral ML feature
 * Generates an automated security report
-* Records the report generation timestamp and number of connections analyzed
+* Records the report generation timestamp and number of connections analy- Generates a visualization of successful and failed network connectionszed
+
 
 How It Works
 
@@ -47,7 +48,9 @@ network-security-analyzer/
 │   └── main.py
 ├── security_report.txt
 ├── requirements.txt
+├── network_connection_status.png
 └── README.md
+
 
 Technologies
 
