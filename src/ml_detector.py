@@ -19,7 +19,12 @@ with open(DATA_FILE, "r") as file:
         else:
             failed = 0
 
-        features.append([port, failed])
+        if str(port) in ["21", "22"]:
+            suspicious = 1
+        else:
+            suspicious = 0
+
+        features.append([port, failed, suspicious])
         records.append(row)
 
 print("ML Features:")
@@ -50,6 +55,13 @@ for record, prediction in zip(records, predictions):
         print("   Port:", record["port"])
         print("   Protocol:", record["protocol"])
         print("   Status:", record["status"])
+
+        if record["status"] == "Failed":
+            print("   Reason: Failed connection")
+
+        if record["port"] in ["21", "22"]:
+            print("   Reason: Connection uses a suspicious port")
+
         print()
 
 report_file = open(REPORT_FILE, "w")
