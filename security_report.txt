@@ -3,5 +3,5 @@ ML Anomaly Detection
 --------------------
 ML detected 2 anomalous connection(s).
 
-ANOMALY - IP: 192.168.1.20, Port: 80, Protocol: HTTP, Status: Success
 ANOMALY - IP: 10.0.0.8, Port: 21, Protocol: FTP, Status: Failed
+ANOMALY - IP: 10.0.0.11, Port: 21, Protocol: FTP, Status: Failed

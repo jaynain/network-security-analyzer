@@ -12,7 +12,7 @@ with open(DATA_FILE, "r") as file:
     reader = csv.DictReader(file)
 
     for row in reader:
-        port = int(row["port"])
+        port = int(row["port"].strip())
 
         if row["status"] == "Failed":
             failed = 1
@@ -31,7 +31,7 @@ print("ML Features:")
 print(features)
 
 model = IsolationForest(
-    contamination=0.25,
+    contamination=0.10,
     random_state=42
 )
 
