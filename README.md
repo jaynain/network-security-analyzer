@@ -59,6 +59,11 @@ Technologies
 
 Running the Project
 
+Install the required Python packages:
+
+```bash
+pip install -r requirements.txt
+
 From the project root:
 
 python src/main.py
