@@ -22,7 +22,6 @@ with open(DATA_FILE, "r") as file:
 
             failed_attempts[ip] += 1
 
-
 # Second pass: create ML features
 with open(DATA_FILE, "r") as file:
     reader = csv.DictReader(file)
@@ -41,9 +40,14 @@ with open(DATA_FILE, "r") as file:
         else:
             suspicious = 0
 
-        features.append([port, failed, suspicious, failed_attempts.get(ip, 0)])
-        records.append(row)
+        features.append([
+            port,
+            failed,
+            suspicious,
+            failed_attempts.get(ip, 0)
+        ])
 
+        records.append(row)
 
 print("ML Features:")
 print(features)
@@ -54,6 +58,7 @@ model = IsolationForest(
 )
 
 predictions = model.fit_predict(features)
+scores = model.decision_function(features)
 
 print("ML Predictions:")
 print(predictions)
@@ -64,11 +69,12 @@ print("--------------------")
 
 ml_anomalies = []
 
-for record, prediction in zip(records, predictions):
+for record, prediction, score in zip(records, predictions, scores):
     if prediction == -1:
-        ml_anomalies.append(record)
+        ml_anomalies.append((record, score))
 
         print("🚨 ANOMALY DETECTED")
+        print("   Anomaly score:", round(score, 4))
         print("   IP:", record["ip_address"])
         print("   Port:", record["port"])
         print("   Protocol:", record["protocol"])
@@ -81,7 +87,6 @@ for record, prediction in zip(records, predictions):
             print("   Reason: Connection uses a suspicious port")
 
         print()
-
 
 # Add ML results to the existing security report
 report_file = open(REPORT_FILE, "a")
@@ -96,7 +101,7 @@ else:
         f"ML detected {len(ml_anomalies)} anomalous connection(s).\n\n"
     )
 
-    for record in ml_anomalies:
+    for record, score in ml_anomalies:
         report_file.write(
             f"ANOMALY - IP: {record['ip_address']}, "
             f"Port: {record['port']}, "
@@ -104,14 +109,19 @@ else:
             f"Status: {record['status']}\n"
         )
 
+        report_file.write(
+            f"Anomaly score: {score:.4f}\n"
+        )
+
         if record["status"] == "Failed":
             report_file.write("Reason: Failed connection\n")
 
         if record["port"] in ["21", "22"]:
-            report_file.write("Reason: Connection uses a suspicious port\n")
+            report_file.write(
+                "Reason: Connection uses a suspicious port\n"
+            )
 
         report_file.write("\n")
-    
 
 report_file.close()
 
