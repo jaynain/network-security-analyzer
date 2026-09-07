@@ -87,3 +87,7 @@ Reason: Failed connection
 Project Goal
 
 This project was created as a hands-on introduction to combining Python, cybersecurity concepts, and machine learning to analyze network activity.
+
+## Limitations
+
+This project uses a small synthetic network-log dataset for demonstration purposes. The machine learning model performs unsupervised anomaly detection and does not classify confirmed attacks. In a production environment, the system would require larger real-world datasets, additional network features, and validated security labels.
