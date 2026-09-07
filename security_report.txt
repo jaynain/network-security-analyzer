@@ -1,6 +1,6 @@
 NETWORK SECURITY REPORT
 ======================
-Generated: 2026-09-07 09:23:13
+Generated: 2026-09-07 09:30:30
 
 Connections analyzed: 32
 
@@ -28,4 +28,10 @@ ML Anomaly Detection
 ML detected 2 anomalous connection(s).
 
 ANOMALY - IP: 10.0.0.8, Port: 21, Protocol: FTP, Status: Failed
+Reason: Failed connection
+Reason: Connection uses a suspicious port
+
 ANOMALY - IP: 10.0.0.11, Port: 21, Protocol: FTP, Status: Failed
+Reason: Failed connection
+Reason: Connection uses a suspicious port
+

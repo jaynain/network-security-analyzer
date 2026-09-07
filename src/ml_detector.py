@@ -104,6 +104,15 @@ else:
             f"Status: {record['status']}\n"
         )
 
+        if record["status"] == "Failed":
+            report_file.write("Reason: Failed connection\n")
+
+        if record["port"] in ["21", "22"]:
+            report_file.write("Reason: Connection uses a suspicious port\n")
+
+        report_file.write("\n")
+    
+
 report_file.close()
 
 print("✅ ML results added to security_report.txt")
